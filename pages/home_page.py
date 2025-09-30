@@ -47,3 +47,6 @@ class HomePage(BasePage):
 
     def is_user_logged_out(self) -> bool:
         return self.is_login_link_visible() and not self.is_logout_link_visible()
+
+    def click_logout(self):
+        self.click(self.LOGOUT_LINK)

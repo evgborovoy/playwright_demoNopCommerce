@@ -29,3 +29,9 @@ def home_page(page):
 def login_page(page):
     from pages.login_page import LoginPage
     return LoginPage(page)
+
+
+@pytest.fixture
+def register_page(page):
+    from pages.register_page import RegisterPage
+    return RegisterPage(page)

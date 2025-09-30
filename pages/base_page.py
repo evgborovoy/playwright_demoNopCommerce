@@ -39,3 +39,7 @@ class BasePage:
 
     def is_visible(self, selector: str) -> bool:
         return self.page.locator(selector).first.is_visible()
+
+    def wait_for_selector(self, selector: str, timeout: int = 30000):
+        """Wait for selector to be visible"""
+        self.page.locator(selector).first.wait_for(state="visible", timeout=timeout)
