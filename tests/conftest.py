@@ -23,3 +23,9 @@ def page(browser):
 def home_page(page):
     from pages.home_page import HomePage
     return HomePage(page)
+
+
+@pytest.fixture
+def login_page(page):
+    from pages.login_page import LoginPage
+    return LoginPage(page)
