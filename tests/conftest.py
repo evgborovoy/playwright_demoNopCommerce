@@ -35,3 +35,15 @@ def login_page(page):
 def register_page(page):
     from pages.register_page import RegisterPage
     return RegisterPage(page)
+
+
+@pytest.fixture
+def products_page(page):
+    from pages.products_page import ProductsPage
+    return ProductsPage(page)
+
+
+@pytest.fixture
+def cart_page(page):
+    from pages.cart_page import CartPage
+    return CartPage(page)
