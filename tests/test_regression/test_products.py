@@ -52,7 +52,7 @@ class TestProductsBasic:
         added_to_cart = products_page.add_to_cart()
         if added_to_cart:
             cart_page.navigate_to_cart()
-            cart_products = cart_page.get_product_names_in_cart()
+            cart_products = cart_page.get_product_names()
 
             assert book_name in cart_products, f"Book {book_name} should be in cart"
             products_page.logger.info(f"Successfully added {book_name} to cart")

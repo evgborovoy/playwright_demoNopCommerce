@@ -5,7 +5,7 @@ from .base_page import BasePage
 
 class CartPage(BasePage):
     CART_ITEMS = ".cart tbody tr"
-    PRODUCT_NAMES = ".product-name a"
+    PRODUCT_NAMES = ".product a"
     QUANTITY_INPUTS = ".qty-input"
     UNIT_PRICES = ".product-unit-price"
     SUBTOTALS = ".product-subtotal"
