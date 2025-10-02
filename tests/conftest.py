@@ -14,7 +14,10 @@ def browser():
 
 @pytest.fixture
 def page(browser):
-    context = browser.new_context()
+    context = browser.new_context(
+        viewport={'width': 1920, 'height': 1080},
+        user_agent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36'
+    )
     page = context.new_page()
     yield page
     context.close()
