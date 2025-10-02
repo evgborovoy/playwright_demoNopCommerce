@@ -1,3 +1,4 @@
+import allure
 from playwright.sync_api import Page
 from utils.logger import logger
 from config.settings import Config
@@ -9,6 +10,7 @@ class BasePage:
         self.logger = logger
         self.base_url = Config.BASE_URL.rstrip('/')
 
+    @allure.step("Navigate to {path}")
     def navigate(self, path: str = ""):
         if path.startswith('http'):
             url = path
@@ -26,10 +28,12 @@ class BasePage:
             self.logger.error(f"Navigation failed: {e}")
             raise
 
+    @allure.step("Click on {selector}")
     def click(self, selector: str):
         self.logger.info(f"Clicking: {selector}")
         self.page.locator(selector).first.click()
 
+    @allure.step("Fill {selector} with {text}")
     def fill(self, selector: str, text: str):
         self.logger.info(f"Filling {selector} with: {text}")
         self.page.locator(selector).first.fill(text)

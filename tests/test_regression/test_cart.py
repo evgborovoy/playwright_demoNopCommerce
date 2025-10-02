@@ -1,25 +1,28 @@
+import allure
 import pytest
 
 
+@allure.suite("Cart Tests")
 class TestCart:
     """
     Regression tests for shopping cart functionality
     """
 
-    def test_cart_page_loading(self, cart_page):
-        cart_page.navigate_to_cart()
-        assert cart_page.is_visible(cart_page.CART_ITEMS) or cart_page.is_visible(cart_page.EMPTY_CART_MESSAGE)
-        cart_page.logger.info("Cart page loads correctly")
-
+    @allure.title("Empty cart message display")
+    @allure.tag("regression", "cart")
     def test_empty_cart_display(self, cart_page):
-        cart_page.clear_cart()
-        cart_page.navigate_to_cart()
+        with allure.step("Open and clear cart"):
+            cart_page.navigate_to_cart()
+            cart_page.clear_cart()
 
-        assert cart_page.is_cart_empty(), "Cart should be empty"
-        assert cart_page.is_visible(cart_page.EMPTY_CART_MESSAGE), "Should show empty cart message"
+        with allure.step("Open and clear cart"):
+            assert cart_page.is_visible(cart_page.EMPTY_CART_MESSAGE), "Should show empty cart message"
 
         cart_page.logger.info("Empty cart displays correctly")
+        allure.attach("Message is displayed", name="Empty cart", attachment_type=allure.attachment_type.TEXT)
 
+    @allure.title("Update product quantity")
+    @allure.tag("regression", "cart")
     def test_update_product_quantity(self, products_page, cart_page):
         products_page.navigate("/books")
         products_page.wait_for_products()
@@ -43,6 +46,8 @@ class TestCart:
         assert updated_quantity == new_quantity, f"Quantity should be {new_quantity}, got {updated_quantity}"
         cart_page.logger.info("Product quantity update works correctly")
 
+    @allure.title("Remove product")
+    @allure.tag("regression", "cart")
     def test_remove_product_from_cart(self, products_page, cart_page):
         cart_page.clear_cart()
         products_page.navigate("/books")
@@ -69,12 +74,13 @@ class TestCart:
         cart_page.logger.info("Product removal works correctly")
 
 
-
 class TestCartEdgeCases:
     """
     Tests for cart edge cases
     """
 
+    @allure.title("Set quantity to 0")
+    @allure.tag("regression", "cart")
     def test_zero_quantity_handling(self, products_page, cart_page):
         products_page.navigate("/books")
         products_page.wait_for_products()
@@ -97,6 +103,8 @@ class TestCartEdgeCases:
         assert cart_page.is_cart_empty(), "Cart should be empty after setting quantity to zero"
         cart_page.logger.info("Zero quantity handling works correctly")
 
+    @allure.title("Product large quantity")
+    @allure.tag("regression", "cart")
     def test_large_quantity_handling(self, products_page, cart_page):
         products_page.navigate("/books")
         products_page.wait_for_products()

@@ -1,4 +1,5 @@
 import pytest
+import allure
 from playwright.sync_api import sync_playwright
 from config.settings import Config
 
@@ -47,3 +48,32 @@ def products_page(page):
 def cart_page(page):
     from pages.cart_page import CartPage
     return CartPage(page)
+
+
+@pytest.hookimpl(tryfirst=True, hookwrapper=True)
+def pytest_runtest_makereport(item, call):
+    """Attach screenshot to Allure while test failed"""
+    outcome = yield
+    report = outcome.get_result()
+
+    if report.when == "call" and report.failed:
+        page_obj = None
+        for fixture_name in item.funcargs:
+            if fixture_name == "page":
+                page_obj = item.funcargs[fixture_name]
+                break
+
+        if page_obj and hasattr(page_obj, 'screenshot'):
+            try:
+                # Делаем скриншот и прикрепляем к Allure
+                screenshot = page_obj.screenshot()
+                allure.attach(screenshot, name="screenshot", attachment_type=allure.attachment_type.PNG)
+
+                # Также добавляем HTML страницу
+                html = page_obj.content()
+                allure.attach(html, name="page_html", attachment_type=allure.attachment_type.HTML)
+
+                # Добавляем URL страницы
+                allure.attach(page_obj.url, name="page_url", attachment_type=allure.attachment_type.TEXT)
+            except Exception as e:
+                print(f"Could not take screenshot: {e}")

@@ -1,40 +1,70 @@
 import pytest
+import allure
 
 
+@allure.suite("Products Tests")
 class TestProductsBasic:
     """
     Basic tests for product functionality
     """
 
+    @allure.title("Check computers category has subcategories")
+    @allure.tag("regression", "products")
     def test_computers_category_has_subcategories(self, products_page):
-        products_page.navigate_to_computers()
-        has_subcategories = products_page.has_subcategories()
-        assert has_subcategories, "Computers category should have subcategories"
-        subcategory_names = products_page.get_subcategory_names()
-        assert len(subcategory_names) > 0, "Should have subcategory names"
+        with allure.step("Navigate to computers category"):
+            products_page.navigate_to_computers()
+
+        with allure.step("Check if subcategories exist"):
+            has_subcategories = products_page.has_subcategories()
+            assert has_subcategories, "Computers category should have subcategories"
+
+        with allure.step("Get subcategory names"):
+            subcategory_names = products_page.get_subcategory_names()
+            assert len(subcategory_names) > 0, "Should have subcategory names"
         products_page.logger.info(f"Computers category has subcategories: {subcategory_names}")
 
+        allure.attach(str(subcategory_names), name="Subcategories", attachment_type=allure.attachment_type.TEXT)
+
+    @allure.title("Navigate to desktops subcategory")
+    @allure.tag("regression", "products")
     def test_navigate_to_desktops_subcategory(self, products_page):
-        products_page.navigate_to_desktops()
-        product_count = products_page.get_products_count()
-        assert product_count > 0, "Desktops subcategory should have products"
+        with allure.step("Navigate to desktop category"):
+            products_page.navigate_to_desktops()
+
+        with allure.step("Check products count"):
+            product_count = products_page.get_products_count()
+            assert product_count > 0, "Desktops subcategory should have products"
         products_page.logger.info(f"Desktops subcategory has {product_count} products")
 
-    def test_product_search_from_subcategory(self, products_page):
-        products_page.navigate_to_desktops()
-        initial_count = products_page.get_products_count()
-        product_name = "Lenovo"
-        products_page.search_products(product_name)
-        search_count = products_page.get_products_count()
-        products_page.logger.info(f"Found {search_count} products after search")
-        assert search_count <= initial_count, "Search should not increase product count"
+        allure.attach(str(product_count), name="Products count", attachment_type=allure.attachment_type.TEXT)
 
-        if search_count > 0:
-            product_names = products_page.get_product_names()
-            for name in product_names:
-                assert product_name in name, f"Product {name} should contain 'Lenovo'"
+    @allure.title("Search products from subcategory")
+    @allure.tag("regression", "products")
+    def test_product_search_from_subcategory(self, products_page):
+        with allure.step("Navigate to desktops subcategory"):
+            products_page.navigate_to_desktops()
+            initial_count = products_page.get_products_count()
+
+        product_name = "Lenovo"
+
+        with allure.step(f"Search for '{product_name}'"):
+            products_page.search_products(product_name)
+            search_count = products_page.get_products_count()
+            products_page.logger.info(f"Found {search_count} products after search")
+
+        with allure.step("Verify search results"):
+            assert search_count <= initial_count, "Search should not increase product count"
+
+            if search_count > 0:
+                product_names = products_page.get_product_names()
+                for name in product_names:
+                    assert product_name in name, f"Product {name} should contain '{product_name}'"
+
+        allure.attach(str(product_names), name="Search results", attachment_type=allure.attachment_type.TEXT)
         products_page.logger.info("Product search from subcategory works")
 
+    @allure.title("Add book to cart")
+    @allure.tag("regression", "products")
     def test_book_add_to_cart(self, products_page, cart_page):
         products_page.navigate("/books")
         products_page.wait_for_products()
@@ -63,23 +93,32 @@ class TestProductsBasic:
             pytest.skip("Book cannot be added to cart")
 
 
+@allure.suite("Category Navigation Tests")
 class TestCategoryNavigation:
     """
     Tests for category and subcategory navigation
     """
 
+    @allure.title("Computers category has expected subcategories")
+    @allure.tag("regression", "products")
     def test_computers_subcategories_exist(self, products_page):
         """Test that computers category has expected subcategories"""
-        products_page.navigate_to_computers()
+        with allure.step("Navigate to computers category"):
+            products_page.navigate_to_computers()
 
-        subcategory_names = products_page.get_subcategory_names()
-        expected_subcategories = ["Desktops", "Notebooks", "Software"]
+        with allure.step("Get subcategories names"):
+            subcategory_names = products_page.get_subcategory_names()
+            expected_subcategories = ["Desktops", "Notebooks", "Software"]
 
-        found_expected = any(sub in subcategory_names for sub in expected_subcategories)
-        assert found_expected, f"Should find expected subcategories in {subcategory_names}"
+        with allure.step("Verify results"):
+            found_expected = any(sub in subcategory_names for sub in expected_subcategories)
+            assert found_expected, f"Should find expected subcategories in {subcategory_names}"
 
+        allure.attach(str(subcategory_names), name="Subcategories names", attachment_type=allure.attachment_type.TEXT)
         products_page.logger.info(f"Found subcategories: {subcategory_names}")
 
+    @allure.title("Navigation trough subcategories")
+    @allure.tag("regression", "products")
     def test_subcategory_navigation_works(self, products_page):
         """Test navigation through subcategories"""
         products_page.navigate_to_computers()
