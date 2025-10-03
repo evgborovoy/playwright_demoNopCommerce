@@ -29,3 +29,11 @@ playwright install
     allure open reports/allure-report
     ```
 
+## Parallel running tests
+For parallel running use command:
+```bash
+pytest -n auto # Run tests on all available CPU cores
+```
+```bash
+pytest -n 2 # Run tests on 2 cores
+```
