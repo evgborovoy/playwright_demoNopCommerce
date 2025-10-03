@@ -4,6 +4,7 @@ attrs==25.3.0
 certifi==2025.8.3
 charset-normalizer==3.4.3
 dotenv==0.9.9
+execnet==2.1.1
 Faker==37.8.0
 greenlet==3.2.4
 idna==3.10
@@ -20,6 +21,7 @@ pytest-base-url==2.1.0
 pytest-html==4.1.1
 pytest-metadata==3.1.1
 pytest-playwright==0.7.1
+pytest-xdist==3.8.0
 python-dotenv==1.1.1
 python-slugify==8.0.4
 requests==2.32.5
