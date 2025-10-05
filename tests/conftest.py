@@ -52,6 +52,20 @@ def cart_page(page):
     from pages.cart_page import CartPage
     return CartPage(page)
 
+@pytest.fixture
+def add_product_in_cart(products_page):
+    products_page.navigate("/books")
+    products_page.wait_for_products()
+    product_names = products_page.get_product_names()
+    products_page.logger.info(f"Available books: {product_names}")
+    if not product_names:
+        pytest.skip("No books available")
+    book_name = product_names[0]
+    products_page.logger.info(f"Testing with book: {book_name}")
+    products_page.click_product(book_name)
+    added_to_cart = products_page.add_to_cart()
+    return added_to_cart
+
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
 def pytest_runtest_makereport(item, call):
