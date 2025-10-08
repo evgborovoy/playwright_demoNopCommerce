@@ -8,7 +8,6 @@ class TestRegistration:
     """
 
     def test_registration_page_loading(self, register_page):
-        register_page.navigate_to_register()
         assert register_page.is_visible(register_page.FIRST_NAME_INPUT)
         assert register_page.is_visible(register_page.LAST_NAME_INPUT)
         assert register_page.is_visible(register_page.EMAIL_INPUT)
@@ -17,7 +16,6 @@ class TestRegistration:
         register_page.logger.info("Registration page loads correctly")
 
     def test_registration_with_valid_data(self, register_page, home_page):
-        register_page.navigate_to_register()
         user_data = TestData.generate_user_data()
         register_page.register(user_data)
         assert register_page.is_registration_successful(), "Registration should be successful"
@@ -26,7 +24,6 @@ class TestRegistration:
         register_page.logger.info(f"Registration successful for: {user_data['email']}")
 
     def test_registration_with_female_gender(self, register_page, home_page):
-        register_page.navigate_to_register()
         user_data = TestData.generate_user_data(gender="female")
         register_page.register(user_data)
         assert register_page.is_registration_successful()
@@ -37,7 +34,6 @@ class TestRegistration:
     @pytest.mark.parametrize("scenario_name,user_data,expected_errors",
                              TestData.generate_invalid_user_data_scenarios())
     def test_registration_validation_errors(self, register_page, scenario_name, user_data, expected_errors):
-        register_page.navigate_to_register()
         register_page.register(user_data)
         validation_errors = register_page.get_validation_errors()
         assert len(validation_errors) >= expected_errors, \
@@ -49,7 +45,6 @@ class TestRegistration:
         weak_passwords = TestData.get_weak_passwords()
 
         for weak_password in weak_passwords:
-            register_page.navigate_to_register()
             user_data = TestData.generate_user_data()
             user_data.update({
                 "password": weak_password,
@@ -63,7 +58,6 @@ class TestRegistration:
     def test_duplicate_email_registration(self, register_page):
         user_data = TestData.generate_user_data()
         # first registration
-        register_page.navigate_to_register()
         register_page.register(user_data)
         assert register_page.is_registration_successful()
         register_page.click_continue()
@@ -89,7 +83,6 @@ class TestRegistrationBoundary:
             "last_name": "B" * 100
         })
 
-        register_page.navigate_to_register()
         register_page.register(user_data)
 
         success = register_page.is_registration_successful()
