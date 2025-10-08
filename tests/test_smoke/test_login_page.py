@@ -8,7 +8,6 @@ class TestAuthSmoke:
     """
 
     def test_login_page_accessible(self, login_page):
-        login_page.navigate_to_login()
         assert login_page.is_login_page_loaded()
         login_page.logger.info("Login page accessibility - PASSED")
 

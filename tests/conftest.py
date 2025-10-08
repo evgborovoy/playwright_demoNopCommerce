@@ -5,6 +5,8 @@ from config.settings import Config
 from pages.login_page import LoginPage
 from pages.home_page import HomePage
 from pages.register_page import RegisterPage
+from pages.cart_page import CartPage
+from pages.products_page import ProductsPage
 from utils.helpers import generate_random_email, generate_random_password
 
 
@@ -78,13 +80,11 @@ def register_page(page, home_page):
 
 @pytest.fixture
 def products_page(page):
-    from pages.products_page import ProductsPage
     return ProductsPage(page)
 
 
 @pytest.fixture
 def cart_page(page):
-    from pages.cart_page import CartPage
     return CartPage(page)
 
 
