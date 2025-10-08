@@ -65,32 +65,19 @@ class TestProductsBasic:
 
     @allure.title("Add book to cart")
     @allure.tag("regression", "products")
-    def test_book_add_to_cart(self, products_page, cart_page):
-        products_page.navigate("/books")
-        products_page.wait_for_products()
-
-        product_names = products_page.get_product_names()
-        products_page.logger.info(f"Available books: {product_names}")
-
-        if not product_names:
-            pytest.skip("No books available")
-
-        book_name = product_names[0]
-        products_page.logger.info(f"Testing with book: {book_name}")
-        products_page.click_product(book_name)
-
-        added_to_cart = products_page.add_to_cart()
-        if added_to_cart:
+    def test_book_add_to_cart(self, products_page, cart_page, add_product_in_cart):
+        if add_product_in_cart:
             cart_page.navigate_to_cart()
             cart_products = cart_page.get_product_names()
 
-            assert book_name in cart_products, f"Book {book_name} should be in cart"
-            products_page.logger.info(f"Successfully added {book_name} to cart")
+            products_page.navigate("/books")
+            products_page.wait_for_products()
+            book_name = products_page.get_product_names()[0]
 
-            cart_page.remove_product(0)
+            assert book_name in cart_products, f"Book {book_name} should be in cart"
+            products_page.logger.info(f"Successfully added {book_name} to cart via fixture")
         else:
-            products_page.logger.info(f"Could not add {book_name} to cart")
-            pytest.skip("Book cannot be added to cart")
+            pytest.skip("Book cannot be added to cart via fixture")
 
 
 @allure.suite("Category Navigation Tests")
@@ -111,7 +98,7 @@ class TestCategoryNavigation:
             expected_subcategories = ["Desktops", "Notebooks", "Software"]
 
         with allure.step("Verify results"):
-            found_expected = any(sub in subcategory_names for sub in expected_subcategories)
+            found_expected = all(sub in subcategory_names for sub in expected_subcategories)
             assert found_expected, f"Should find expected subcategories in {subcategory_names}"
 
         allure.attach(str(subcategory_names), name="Subcategories names", attachment_type=allure.attachment_type.TEXT)
