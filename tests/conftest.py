@@ -2,12 +2,19 @@ import pytest
 import allure
 from playwright.sync_api import sync_playwright
 from config.settings import Config
+from pages.login_page import LoginPage
+from pages.home_page import HomePage
+from pages.register_page import RegisterPage
+from utils.helpers import generate_random_email, generate_random_password
 
 
 @pytest.fixture(scope="session")
 def browser():
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=Config.HEADLESS)
+        browser = p.chromium.launch(
+            headless=Config.HEADLESS,
+            timeout=Config.DEFAULT_TIMEOUT
+        )
         yield browser
         browser.close()
 
@@ -16,7 +23,8 @@ def browser():
 def page(browser):
     context = browser.new_context(
         viewport={'width': 1920, 'height': 1080},
-        user_agent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36'
+        user_agent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
+        base_url=Config.BASE_URL
     )
     page = context.new_page()
     yield page
@@ -25,20 +33,47 @@ def page(browser):
 
 @pytest.fixture
 def home_page(page):
-    from pages.home_page import HomePage
     return HomePage(page)
 
 
 @pytest.fixture
-def login_page(page):
-    from pages.login_page import LoginPage
-    return LoginPage(page)
+def login_page(page, home_page):
+    home_page.navigate("")
+    if home_page.is_user_logged_in():
+        home_page.click_logout()
+
+    login_page = LoginPage(page)
+    login_page.navigate("login")
+    login_page.wait_for_login_form()
+    return login_page
 
 
 @pytest.fixture
-def register_page(page):
-    from pages.register_page import RegisterPage
-    return RegisterPage(page)
+def logged_in_home(login_page, home_page) -> 'HomePage':
+    """
+    Logs you in and returns the HomePage.
+    Tests using this fixture start in the logged in state.
+    """
+    random_email = generate_random_email()
+    random_password = generate_random_password()
+
+    login_page.login(random_email, random_password)
+
+    home_page.wait_for_login_state(should_be_logged_in=True)
+
+    return home_page
+
+
+@pytest.fixture
+def register_page(page, home_page):
+    home_page.navigate("")
+    if home_page.is_user_logged_in():
+        home_page.click_logout()
+
+    register_page = RegisterPage(page)
+    register_page.navigate("register")
+    register_page.wait_for_register_form()
+    return register_page
 
 
 @pytest.fixture
@@ -52,19 +87,33 @@ def cart_page(page):
     from pages.cart_page import CartPage
     return CartPage(page)
 
+
 @pytest.fixture
-def add_product_in_cart(products_page):
+def add_product_in_cart(products_page, cart_page):
+    """Ensures the cart is empty, adds one product, and clears the cart after the test"""
+    products_page.logger.info("SETUP: Clearing cart before adding product.")
+    cart_page.navigate("cart")
+    cart_page.clear_cart()
+
     products_page.navigate("/books")
     products_page.wait_for_products()
     product_names = products_page.get_product_names()
-    products_page.logger.info(f"Available books: {product_names}")
+
     if not product_names:
         pytest.skip("No books available")
+
     book_name = product_names[0]
-    products_page.logger.info(f"Testing with book: {book_name}")
     products_page.click_product(book_name)
     added_to_cart = products_page.add_to_cart()
-    return added_to_cart
+
+    if not added_to_cart:
+        pytest.fail("Failed to add product to cart during fixture setup.")
+
+    yield True
+
+    products_page.logger.info("TEARDOWN: Clearing cart after test.")
+    cart_page.navigate("cart")
+    cart_page.clear_cart()
 
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
@@ -74,23 +123,14 @@ def pytest_runtest_makereport(item, call):
     report = outcome.get_result()
 
     if report.when == "call" and report.failed:
-        page_obj = None
-        for fixture_name in item.funcargs:
-            if fixture_name == "page":
-                page_obj = item.funcargs[fixture_name]
-                break
+        page_obj = item.funcargs.get("page")
 
         if page_obj and hasattr(page_obj, 'screenshot'):
             try:
-                # Делаем скриншот и прикрепляем к Allure
                 screenshot = page_obj.screenshot()
                 allure.attach(screenshot, name="screenshot", attachment_type=allure.attachment_type.PNG)
-
-                # Также добавляем HTML страницу
                 html = page_obj.content()
                 allure.attach(html, name="page_html", attachment_type=allure.attachment_type.HTML)
-
-                # Добавляем URL страницы
                 allure.attach(page_obj.url, name="page_url", attachment_type=allure.attachment_type.TEXT)
             except Exception as e:
                 print(f"Could not take screenshot: {e}")
