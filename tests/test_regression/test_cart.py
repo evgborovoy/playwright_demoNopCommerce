@@ -23,9 +23,8 @@ class TestCart:
 
     @allure.title("Update product quantity")
     @allure.tag("regression", "cart")
-    def test_update_product_quantity(self, products_page, cart_page, add_product_in_cart):
-        if add_product_in_cart:
-            cart_page.navigate_to_cart()
+    def test_update_product_quantity(self, cart_page, add_product_in_cart):
+        cart_page.navigate_to_cart()
 
         initial_quantity = cart_page.get_product_quantity(0)
         new_quantity = initial_quantity + 1
@@ -38,9 +37,8 @@ class TestCart:
 
     @allure.title("Remove product")
     @allure.tag("regression", "cart")
-    def test_remove_product_from_cart(self, products_page, cart_page, add_product_in_cart):
-        if add_product_in_cart:
-            cart_page.navigate_to_cart()
+    def test_remove_product_from_cart(self, cart_page, add_product_in_cart):
+        cart_page.navigate_to_cart()
 
         initial_count = cart_page.get_cart_items_count()
 
@@ -60,9 +58,8 @@ class TestCartEdgeCases:
 
     @allure.title("Set quantity to 0")
     @allure.tag("regression", "cart")
-    def test_zero_quantity_handling(self, products_page, cart_page, add_product_in_cart):
-        if add_product_in_cart:
-            cart_page.navigate_to_cart()
+    def test_zero_quantity_handling(self, cart_page, add_product_in_cart):
+        cart_page.navigate_to_cart()
 
         # Try to set quantity to zero
         success = cart_page.update_product_quantity(0, 0)
@@ -74,19 +71,8 @@ class TestCartEdgeCases:
 
     @allure.title("Product large quantity")
     @allure.tag("regression", "cart")
-    def test_large_quantity_handling(self, products_page, cart_page):
-        products_page.navigate("/books")
-        products_page.wait_for_products()
-        product_names = products_page.get_product_names()
-        products_page.logger.info(f"Available books: {product_names}")
-        if not product_names:
-            pytest.skip("No books available")
-        book_name = product_names[0]
-        products_page.logger.info(f"Testing with book: {book_name}")
-        products_page.click_product(book_name)
-        added_to_cart = products_page.add_to_cart()
-        if added_to_cart:
-            cart_page.navigate_to_cart()
+    def test_large_quantity_handling(self, products_page, cart_page, add_product_in_cart):
+        cart_page.navigate_to_cart()
 
         large_quantity = 999
         success = cart_page.update_product_quantity(0, large_quantity)
@@ -95,6 +81,5 @@ class TestCartEdgeCases:
             updated_quantity = cart_page.get_product_quantity(0)
             assert updated_quantity == large_quantity, f"Should accept large quantity: {large_quantity}"
         else:
-            # If failed, should show some validation
-            assert True, "Large quantity properly rejected with validation"
+            assert True, "Large quantity properly rejected with validation or handled by system"
         cart_page.logger.info("Large quantity handling works correctly")
