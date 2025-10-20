@@ -43,7 +43,8 @@ jobs:
       - name: Build and Publish Allure Report
         uses: 'simple-elf/allure-report-action@v1.11'
         if: always()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           allure_results: reports/allure-results
-          github_token: ${{ secrets.GITHUB_TOKEN }}
           gh_pages: gh-pages
