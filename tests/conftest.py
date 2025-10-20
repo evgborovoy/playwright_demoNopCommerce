@@ -1,5 +1,6 @@
 import pytest
 import allure
+import os
 from playwright.sync_api import sync_playwright
 from config.settings import Config
 from pages.login_page import LoginPage
@@ -9,12 +10,15 @@ from pages.cart_page import CartPage
 from pages.products_page import ProductsPage
 from utils.helpers import generate_random_email, generate_random_password
 
+IS_CI_HEADLESS = os.environ.get('CI_HEADLESS') == 'true'
+
 
 @pytest.fixture(scope="session")
 def browser():
+    headless_mode = True if IS_CI_HEADLESS else Config.HEADLESS
     with sync_playwright() as p:
         browser = p.chromium.launch(
-            headless=Config.HEADLESS,
+            headless=headless_mode,
             timeout=Config.DEFAULT_TIMEOUT
         )
         yield browser
