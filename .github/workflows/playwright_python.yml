@@ -45,6 +45,6 @@ jobs:
         if: always()
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH-PAGES: gh-pages
         with:
           allure_results: reports/allure-results
-          gh_pages: gh-pages
