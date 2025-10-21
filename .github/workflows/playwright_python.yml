@@ -2,15 +2,20 @@ name: Playwright python tests
 
 on:
   push:
-    branches: ['main', 'master', 'dev']
+    branches: [ 'main', 'master', 'dev' ]
   pull_request:
-    branches: ['main', 'master', 'dev']
+    branches: [ 'main', 'master', 'dev' ]
   workflow_dispatch:
 
 jobs:
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 360
+
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
 
     steps:
       - name: Checkout repository
@@ -26,25 +31,52 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Install playwright browsers and dependencies
-        run: playwright install --with-deps
+      - name: Install Allure commandline
+        run: |
+          wget https://github.com/allure-framework/allure2/releases/download/2.25.0/allure-2.25.0.zip
+          unzip allure-2.25.0.zip -d $HOME/allure
+          export PATH=$HOME/allure/allure-2.25.0/bin:$PATH
+          echo "$HOME/allure/allure-2.25.0/bin" >> $GITHUB_PATH
+          allure --version
 
       - name: Run tests
-        env:
-          CI_HEADLESS: 'true'
-        run: pytest --alluredir=reports/allure-results
+        continue-on-error: true
+        run: pytest --alluredir=allure-results
 
-      - name: Upload Allure test results (raw data)
+      - name: Check allure-results
+        run: ls -la allure-results
+
+      - name: Generate Allure report
+        run: allure generate allure-results -o allure-report --clean
+
+      - name: Publish Allure report to gh-pages
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          git fetch origin gh-pages || true
+          git checkout gh-pages || git checkout --orphan gh-pages
+
+          git rm -rf . || true
+
+          cp -r allure-report/* .
+
+          git add .
+          git commit -m "Update Allure report [skip ci]" || echo "No changes to commit"
+          git push origin gh-pages --force
+
+      - name: Upload Allure report as artifact
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: allure-results-raw
-          path: reports/allure-results
+          name: allure-report
+          path: allure-report
+          retention-days: 10
 
-      - name: Build and Publish Allure Report
-        uses: 'simple-elf/allure-report-action@v1.11'
+      - name: Print Allure report link
         if: always()
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH-PAGES: gh-pages
-        with:
-          allure_results: reports/allure-results
+        run: |
+          REPO_NAME=$(echo $GITHUB_REPOSITORY | cut -d'/' -f2)
+          echo "✅ Allure report published!"
+          echo "🌐 Online report: https://${{ github.repository_owner }}.github.io/${REPO_NAME}/"
+          echo "📦 Downloadable report available in Artifacts tab (as allure-report.zip)"
