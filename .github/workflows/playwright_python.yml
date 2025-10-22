@@ -43,6 +43,8 @@ jobs:
           allure --version
 
       - name: Run tests
+        env:
+          CI_HEADLESS: true
         continue-on-error: true
         run: pytest --alluredir=allure-results
 
