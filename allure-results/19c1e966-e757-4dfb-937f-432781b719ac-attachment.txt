@@ -1,0 +1,7 @@
+INFO     nopcommerce_framework:base_page.py:22 Navigating to: /
+INFO     nopcommerce_framework:base_page.py:26 Navigation successful
+INFO     nopcommerce_framework:base_page.py:22 Navigating to: /register
+INFO     nopcommerce_framework:base_page.py:26 Navigation successful
+INFO     nopcommerce_framework:register_page.py:20 Waiting for registration form
+INFO     nopcommerce_framework:register_page.py:22 Registration form is visible
+INFO     nopcommerce_framework:test_registration.py:12 Registration page accessible from home

@@ -1,0 +1,9 @@
+INFO     nopcommerce_framework:conftest.py:98 SETUP: Clearing cart before adding product.
+INFO     nopcommerce_framework:base_page.py:22 Navigating to: /cart
+INFO     nopcommerce_framework:base_page.py:26 Navigation successful
+INFO     nopcommerce_framework:cart_page.py:104 Start clear cart
+INFO     nopcommerce_framework:cart_page.py:38 Cart has 0 items
+INFO     nopcommerce_framework:base_page.py:22 Navigating to: /books
+INFO     nopcommerce_framework:base_page.py:26 Navigation successful
+INFO     nopcommerce_framework:products_page.py:42 Products loaded
+INFO     nopcommerce_framework:products_page.py:82 Clicking product: Fahrenheit 451 by Ray Bradbury

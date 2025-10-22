@@ -1,0 +1,3 @@
+INFO     nopcommerce_framework:base_page.py:22 Navigating to: /books
+INFO     nopcommerce_framework:base_page.py:26 Navigation successful
+INFO     nopcommerce_framework:products_page.py:82 Clicking product: Fahrenheit 451 by Ray Bradbury

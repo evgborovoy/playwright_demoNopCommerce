@@ -1,0 +1,4 @@
+INFO     nopcommerce_framework:base_page.py:22 Navigating to: /computers
+INFO     nopcommerce_framework:base_page.py:26 Navigation successful
+INFO     nopcommerce_framework:products_page.py:27 Category page loaded
+INFO     nopcommerce_framework:products_page.py:45 Clicking subcategory: Desktops
