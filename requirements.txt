@@ -20,7 +20,6 @@ pytest==8.4.2
 pytest-base-url==2.1.0
 pytest-html==4.1.1
 pytest-metadata==3.1.1
-pytest-playwright==0.7.1
 pytest-xdist==3.8.0
 python-dotenv==1.1.1
 python-slugify==8.0.4

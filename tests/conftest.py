@@ -13,16 +13,46 @@ from utils.helpers import generate_random_email, generate_random_password
 IS_CI_HEADLESS = os.environ.get('CI_HEADLESS') == 'true'
 
 
+def pytest_addoption(parser):
+    parser.addoption(
+        "--browsers-to-run",
+        action="store",
+        default="chromium",
+        help="List of browsers to run (e.g., firefox,chromium)")
+
+
+def pytest_generate_tests(metafunc):
+    if "browser_name" in metafunc.fixturenames:
+        browsers_string = metafunc.config.getoption("--browsers-to-run")
+        browsers_list = [b.strip() for b in browsers_string.split(',')]
+
+        metafunc.parametrize("browser_name", browsers_list, scope="session")
+
 @pytest.fixture(scope="session")
-def browser():
+def browser_name(request):
+    pass
+
+@pytest.fixture(scope="session")
+def browser_name(request):
+    return request.config.getoption("--browser")
+
+
+@pytest.fixture(scope="session")
+def browser(browser_name):
+    print(f"\n[DEBUG] Запускаемый браузер: {browser_name}\n")
     headless_mode = True if IS_CI_HEADLESS else Config.HEADLESS
     with sync_playwright() as p:
-        browser = p.chromium.launch(
-            headless=headless_mode,
-            timeout=Config.DEFAULT_TIMEOUT
-        )
-        yield browser
-        browser.close()
+        if browser_name == "chromium":
+            browser_instance = p.chromium.launch(headless=headless_mode, timeout=Config.DEFAULT_TIMEOUT)
+        elif browser_name == "firefox":
+            browser_instance = p.firefox.launch(headless=headless_mode, timeout=Config.DEFAULT_TIMEOUT)
+        elif browser_name == "webkit":
+            browser_instance = p.webkit.launch(headless=headless_mode, timeout=Config.DEFAULT_TIMEOUT)
+        else:
+            raise ValueError(f"Unsupported browser: {browser_name}")
+
+        yield browser_instance
+        browser_instance.close()
 
 
 @pytest.fixture

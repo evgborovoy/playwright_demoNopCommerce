@@ -32,7 +32,7 @@ jobs:
           pip install -r requirements.txt
 
       - name: Install playwright browsers and dependencies
-        run: playwright install --with-deps
+        run: playwright install --with-deps --only-shell
 
       - name: Install Allure commandline
         run: |
