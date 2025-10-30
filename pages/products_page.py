@@ -1,4 +1,5 @@
 import time
+import re
 from .base_page import BasePage
 from playwright.sync_api import expect
 
@@ -92,7 +93,6 @@ class ProductsPage(BasePage):
         try:
             cart_text = self.page.locator(self.CART_QUANTITY).text_content()
             if cart_text:
-                import re
                 numbers = re.findall(r'\d+', cart_text)
                 return int(numbers[0]) if numbers else 0
         except:

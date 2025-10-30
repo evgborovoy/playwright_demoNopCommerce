@@ -50,7 +50,6 @@ def login_page(page, home_page):
 
     login_page = LoginPage(page)
     login_page.navigate("login")
-    login_page.wait_for_login_form()
     return login_page
 
 
@@ -78,7 +77,6 @@ def register_page(page, home_page):
 
     register_page = RegisterPage(page)
     register_page.navigate("register")
-    register_page.wait_for_register_form()
     return register_page
 
 
