@@ -1,0 +1,28 @@
+INFO     nopcommerce_framework:conftest.py:126 SETUP: Clearing cart before adding product.
+INFO     nopcommerce_framework:base_page.py:22 Navigating to: /cart
+INFO     nopcommerce_framework:base_page.py:26 Navigation successful
+INFO     nopcommerce_framework:cart_page.py:104 Start clear cart
+INFO     nopcommerce_framework:cart_page.py:38 Cart has 0 items
+INFO     nopcommerce_framework:base_page.py:22 Navigating to: /books
+INFO     nopcommerce_framework:base_page.py:26 Navigation successful
+INFO     nopcommerce_framework:products_page.py:43 Products loaded
+INFO     nopcommerce_framework:products_page.py:83 Clicking product: Fahrenheit 451 by Ray Bradbury
+INFO     nopcommerce_framework:products_page.py:80 Product details page loaded
+INFO     nopcommerce_framework:products_page.py:146 Attempting to add product to cart
+INFO     nopcommerce_framework:products_page.py:105 Wait page stability
+INFO     nopcommerce_framework:products_page.py:131 Success notification appeared
+INFO     nopcommerce_framework:products_page.py:159 Product added to cart successfully
+INFO     nopcommerce_framework:base_page.py:22 Navigating to: /cart
+INFO     nopcommerce_framework:base_page.py:26 Navigation successful
+INFO     nopcommerce_framework:cart_page.py:23 Waiting for cart to load
+INFO     nopcommerce_framework:cart_page.py:28 Cart loaded
+INFO     nopcommerce_framework:cart_page.py:77 Updating product 1 quantity to 0
+INFO     nopcommerce_framework:cart_page.py:23 Waiting for cart to load
+INFO     nopcommerce_framework:cart_page.py:28 Cart loaded
+INFO     nopcommerce_framework:cart_page.py:38 Cart has 0 items
+INFO     nopcommerce_framework:test_cart.py:69 Zero quantity handling works correctly
+INFO     nopcommerce_framework:conftest.py:146 TEARDOWN: Clearing cart after test.
+INFO     nopcommerce_framework:base_page.py:22 Navigating to: /cart
+INFO     nopcommerce_framework:base_page.py:26 Navigation successful
+INFO     nopcommerce_framework:cart_page.py:104 Start clear cart
+INFO     nopcommerce_framework:cart_page.py:38 Cart has 0 items

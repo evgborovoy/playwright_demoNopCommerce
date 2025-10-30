@@ -1,0 +1,18 @@
+INFO     nopcommerce_framework:base_page.py:22 Navigating to: /
+INFO     nopcommerce_framework:base_page.py:26 Navigation successful
+INFO     nopcommerce_framework:base_page.py:22 Navigating to: /register
+INFO     nopcommerce_framework:base_page.py:26 Navigation successful
+INFO     nopcommerce_framework:register_page.py:52 Starting registration for: lhickman@example.net
+INFO     nopcommerce_framework:base_page.py:33 Clicking: #gender-male
+INFO     nopcommerce_framework:register_page.py:35 Selected gender: male
+INFO     nopcommerce_framework:base_page.py:38 Filling #FirstName with: Charles
+INFO     nopcommerce_framework:base_page.py:38 Filling #LastName with: Perez
+INFO     nopcommerce_framework:base_page.py:38 Filling #Email with: lhickman@example.net
+INFO     nopcommerce_framework:register_page.py:41 Filled personal details for: Charles Perez
+INFO     nopcommerce_framework:base_page.py:38 Filling #Password with: 123
+INFO     nopcommerce_framework:base_page.py:38 Filling #ConfirmPassword with: 123
+INFO     nopcommerce_framework:register_page.py:49 Filled password fields
+INFO     nopcommerce_framework:base_page.py:33 Clicking: #register-button
+INFO     nopcommerce_framework:register_page.py:69 Registration form submitted
+INFO     nopcommerce_framework:register_page.py:93 Validation error: Password must meet the following rules:  must have at least 6 characters and not greater than 64 characters
+INFO     nopcommerce_framework:test_registration.py:42 Validation scenario 'weak_password' works correctly

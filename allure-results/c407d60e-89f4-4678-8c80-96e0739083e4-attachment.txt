@@ -1,0 +1,18 @@
+INFO     nopcommerce_framework:base_page.py:22 Navigating to: /
+INFO     nopcommerce_framework:base_page.py:26 Navigation successful
+INFO     nopcommerce_framework:base_page.py:22 Navigating to: /register
+INFO     nopcommerce_framework:base_page.py:26 Navigation successful
+INFO     nopcommerce_framework:register_page.py:52 Starting registration for: hullkeith@example.com
+INFO     nopcommerce_framework:base_page.py:33 Clicking: #gender-male
+INFO     nopcommerce_framework:register_page.py:35 Selected gender: male
+INFO     nopcommerce_framework:base_page.py:38 Filling #FirstName with: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+INFO     nopcommerce_framework:base_page.py:38 Filling #LastName with: BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+INFO     nopcommerce_framework:base_page.py:38 Filling #Email with: hullkeith@example.com
+INFO     nopcommerce_framework:register_page.py:41 Filled personal details for: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+INFO     nopcommerce_framework:base_page.py:38 Filling #Password with: Test123!
+INFO     nopcommerce_framework:base_page.py:38 Filling #ConfirmPassword with: Test123!
+INFO     nopcommerce_framework:register_page.py:49 Filled password fields
+INFO     nopcommerce_framework:base_page.py:33 Clicking: #register-button
+INFO     nopcommerce_framework:register_page.py:69 Registration form submitted
+INFO     nopcommerce_framework:register_page.py:74 Registration success: Your registration completed
+INFO     nopcommerce_framework:test_registration.py:92 Long names handled correctly

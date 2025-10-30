@@ -1,0 +1,19 @@
+INFO     nopcommerce_framework:base_page.py:22 Navigating to: /
+INFO     nopcommerce_framework:base_page.py:26 Navigation successful
+INFO     nopcommerce_framework:base_page.py:22 Navigating to: /login
+INFO     nopcommerce_framework:base_page.py:26 Navigation successful
+INFO     nopcommerce_framework:base_page.py:22 Navigating to: /
+INFO     nopcommerce_framework:base_page.py:26 Navigation successful
+INFO     nopcommerce_framework:test_auth.py:64 PASS: Initial state: user logged out
+INFO     nopcommerce_framework:base_page.py:33 Clicking: text=Log in
+INFO     nopcommerce_framework:test_auth.py:68 Navigated to login page
+INFO     nopcommerce_framework:login_page.py:22 Logging in with email: wrong@example.com
+INFO     nopcommerce_framework:base_page.py:38 Filling #Email with: wrong@example.com
+INFO     nopcommerce_framework:base_page.py:38 Filling #Password with: wrongpass
+INFO     nopcommerce_framework:base_page.py:33 Clicking: button:has-text('Log in')
+INFO     nopcommerce_framework:login_page.py:30 Login attempt completed
+INFO     nopcommerce_framework:login_page.py:35 Login error: Login was unsuccessful. Please correct the errors and try again.No customer account found
+
+INFO     nopcommerce_framework:base_page.py:22 Navigating to: /
+INFO     nopcommerce_framework:base_page.py:26 Navigation successful
+INFO     nopcommerce_framework:test_auth.py:76 PASS: User remains logged out after failed login

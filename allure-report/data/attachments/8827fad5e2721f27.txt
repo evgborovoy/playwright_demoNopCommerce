@@ -1,0 +1,10 @@
+INFO     nopcommerce_framework:base_page.py:22 Navigating to: /
+INFO     nopcommerce_framework:base_page.py:26 Navigation successful
+INFO     nopcommerce_framework:base_page.py:22 Navigating to: /login
+INFO     nopcommerce_framework:base_page.py:26 Navigation successful
+INFO     nopcommerce_framework:login_page.py:22 Logging in with email: 
+INFO     nopcommerce_framework:base_page.py:38 Filling #Email with: 
+INFO     nopcommerce_framework:base_page.py:38 Filling #Password with: 
+INFO     nopcommerce_framework:base_page.py:33 Clicking: button:has-text('Log in')
+INFO     nopcommerce_framework:login_page.py:30 Login attempt completed
+INFO     nopcommerce_framework:test_auth.py:29 Empty credentials handled correctly

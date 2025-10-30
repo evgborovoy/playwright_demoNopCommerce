@@ -1,0 +1,12 @@
+INFO     nopcommerce_framework:base_page.py:22 Navigating to: /computers
+INFO     nopcommerce_framework:base_page.py:26 Navigation successful
+INFO     nopcommerce_framework:products_page.py:28 Category page loaded
+INFO     nopcommerce_framework:products_page.py:46 Clicking subcategory: Desktops
+INFO     nopcommerce_framework:products_page.py:43 Products loaded
+INFO     nopcommerce_framework:test_products.py:130 Direct desktops navigation works
+INFO     nopcommerce_framework:base_page.py:22 Navigating to: /computers
+INFO     nopcommerce_framework:base_page.py:26 Navigation successful
+INFO     nopcommerce_framework:products_page.py:28 Category page loaded
+INFO     nopcommerce_framework:products_page.py:46 Clicking subcategory: Notebooks
+INFO     nopcommerce_framework:products_page.py:43 Products loaded
+INFO     nopcommerce_framework:test_products.py:135 Direct notebooks navigation works

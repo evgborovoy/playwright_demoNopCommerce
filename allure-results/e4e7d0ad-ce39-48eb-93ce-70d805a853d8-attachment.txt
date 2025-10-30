@@ -1,0 +1,7 @@
+INFO     nopcommerce_framework:base_page.py:22 Navigating to: /
+INFO     nopcommerce_framework:base_page.py:26 Navigation successful
+INFO     nopcommerce_framework:base_page.py:22 Navigating to: /login
+INFO     nopcommerce_framework:base_page.py:26 Navigation successful
+INFO     nopcommerce_framework:login_page.py:40 Clicking forgot password link
+INFO     nopcommerce_framework:base_page.py:33 Clicking: text=Forgot password?
+INFO     nopcommerce_framework:test_auth.py:42 Forgot password link works correctly

@@ -1,0 +1,11 @@
+INFO     nopcommerce_framework:base_page.py:22 Navigating to: /computers
+INFO     nopcommerce_framework:base_page.py:26 Navigation successful
+INFO     nopcommerce_framework:products_page.py:28 Category page loaded
+INFO     nopcommerce_framework:products_page.py:46 Clicking subcategory: Desktops
+INFO     nopcommerce_framework:products_page.py:43 Products loaded
+INFO     nopcommerce_framework:products_page.py:62 Searching for: Lenovo
+INFO     nopcommerce_framework:base_page.py:38 Filling #small-searchterms with: Lenovo
+INFO     nopcommerce_framework:base_page.py:33 Clicking: button[type='submit']
+INFO     nopcommerce_framework:products_page.py:43 Products loaded
+INFO     nopcommerce_framework:test_products.py:53 Found 2 products after search
+INFO     nopcommerce_framework:test_products.py:64 Product search from subcategory works

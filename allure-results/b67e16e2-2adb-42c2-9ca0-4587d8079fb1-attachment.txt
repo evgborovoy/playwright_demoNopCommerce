@@ -1,0 +1,12 @@
+INFO     nopcommerce_framework:base_page.py:22 Navigating to: /computers
+INFO     nopcommerce_framework:base_page.py:26 Navigation successful
+INFO     nopcommerce_framework:test_products.py:21 /computers category accessible
+INFO     nopcommerce_framework:base_page.py:22 Navigating to: /electronics
+INFO     nopcommerce_framework:base_page.py:26 Navigation successful
+INFO     nopcommerce_framework:test_products.py:21 /electronics category accessible
+INFO     nopcommerce_framework:base_page.py:22 Navigating to: /books
+INFO     nopcommerce_framework:base_page.py:26 Navigation successful
+INFO     nopcommerce_framework:test_products.py:21 /books category accessible
+INFO     nopcommerce_framework:base_page.py:22 Navigating to: /digital-downloads
+INFO     nopcommerce_framework:base_page.py:26 Navigation successful
+INFO     nopcommerce_framework:test_products.py:21 /digital-downloads category accessible

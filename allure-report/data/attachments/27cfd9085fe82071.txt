@@ -1,0 +1,18 @@
+INFO     nopcommerce_framework:base_page.py:22 Navigating to: /
+INFO     nopcommerce_framework:base_page.py:26 Navigation successful
+INFO     nopcommerce_framework:base_page.py:22 Navigating to: /register
+INFO     nopcommerce_framework:base_page.py:26 Navigation successful
+INFO     nopcommerce_framework:register_page.py:52 Starting registration for: victoria32@example.net
+INFO     nopcommerce_framework:base_page.py:33 Clicking: #gender-male
+INFO     nopcommerce_framework:register_page.py:35 Selected gender: male
+INFO     nopcommerce_framework:base_page.py:38 Filling #FirstName with: 
+INFO     nopcommerce_framework:base_page.py:38 Filling #LastName with: Carter
+INFO     nopcommerce_framework:base_page.py:38 Filling #Email with: victoria32@example.net
+INFO     nopcommerce_framework:register_page.py:41 Filled personal details for:  Carter
+INFO     nopcommerce_framework:base_page.py:38 Filling #Password with: Test123!
+INFO     nopcommerce_framework:base_page.py:38 Filling #ConfirmPassword with: Test123!
+INFO     nopcommerce_framework:register_page.py:49 Filled password fields
+INFO     nopcommerce_framework:base_page.py:33 Clicking: #register-button
+INFO     nopcommerce_framework:register_page.py:69 Registration form submitted
+INFO     nopcommerce_framework:register_page.py:93 Validation error: First name is required.
+INFO     nopcommerce_framework:test_registration.py:42 Validation scenario 'empty_first_name' works correctly

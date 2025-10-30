@@ -1,0 +1,7 @@
+INFO     nopcommerce_framework:base_page.py:22 Navigating to: /cart
+INFO     nopcommerce_framework:base_page.py:26 Navigation successful
+INFO     nopcommerce_framework:cart_page.py:23 Waiting for cart to load
+INFO     nopcommerce_framework:cart_page.py:28 Cart loaded
+INFO     nopcommerce_framework:cart_page.py:104 Start clear cart
+INFO     nopcommerce_framework:cart_page.py:38 Cart has 0 items
+INFO     nopcommerce_framework:test_cart.py:20 Empty cart displays correctly

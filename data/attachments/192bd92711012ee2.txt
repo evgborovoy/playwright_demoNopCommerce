@@ -1,0 +1,3 @@
+INFO     nopcommerce_framework:base_page.py:22 Navigating to: /
+INFO     nopcommerce_framework:base_page.py:26 Navigation successful
+INFO     nopcommerce_framework:test_login_page.py:18 Home page login state indicators work correctly
