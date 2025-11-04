@@ -117,12 +117,12 @@ jobs:
           > allure-report/index.html
           fi
 
-      - name: Upload Allure report as artifact
-        if: ${{ always() }}
+      - name: Upload Allure results
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: allure-report
-          path: allure-report
+          name: allure-results-${{ matrix.browser }}-${{ matrix.channel || 'stable' }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: allure-results
           retention-days: 10
 
       - name: Deploy report to gh-pages
