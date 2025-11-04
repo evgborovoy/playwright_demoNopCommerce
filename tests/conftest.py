@@ -11,12 +11,13 @@ from pages.products_page import ProductsPage
 
 @pytest.fixture(scope="session")
 def browser_context_args(browser_context_args):
+    ua = Config.USER_AGENT or "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
     return {
         **browser_context_args,
         "base_url": Config.BASE_URL,
         "viewport": {"width": 1366, "height": 900},
         "locale": "en-US",
-        "user_agent": Config.USER_AGENT,
+        "user_agent": ua,
     }
 
 
