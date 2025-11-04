@@ -108,35 +108,35 @@ jobs:
           else
             echo "No allure results found. Creating placeholder report."
             mkdir -p allure-report
-            cat > allure-report/index.html <<'HTML'
-  <!doctype html><meta charset="utf-8">
-  <title>Allure report</title>
-  <h2>No test results were produced</h2>
-  <p>Looks like tests did not create any Allure results.</p>
-  HTML
-  fi
+            printf '%s\n' \
+          '<!doctype html><meta charset="utf-8">' \
+          '<title>Allure report</title>' \
+          '<h2>No test results were produced</h2>' \
+          '<p>Looks like tests did not create any Allure results.</p>' \
+          > allure-report/index.html
+          fi
 
-  - name: Upload Allure report as artifact
-    if: ${{ always() }}
-    uses: actions/upload-artifact@v4
-    with:
-      name: allure-report
-      path: allure-report
-      retention-days: 10
+      - name: Upload Allure report as artifact
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report
+          path: allure-report
+          retention-days: 10
 
-  - name: Deploy report to gh-pages
-    if: ${{ always() }}
-    uses: peaceiris/actions-gh-pages@v3
-    with:
-      github_token: ${{ secrets.GITHUB_TOKEN }}
-      publish_branch: gh-pages
-      publish_dir: ./allure-report
-      force_orphan: true
-      enable_jekyll: false
+      - name: Deploy report to gh-pages
+        if: ${{ always() }}
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./allure-report
+          force_orphan: true
+          enable_jekyll: false
 
-  - name: Print Allure report link
-    if: ${{ always() }}
-    run: |
-      REPO_NAME=$(echo $GITHUB_REPOSITORY | cut -d'/' -f2)
-      echo "✅ Allure report published!"
-      echo "🌐 Online report: https://${{ github.repository_owner }}.github.io/${REPO_NAME}/"
+      - name: Print Allure report link
+        if: ${{ always() }}
+        run: |
+          REPO_NAME=$(echo $GITHUB_REPOSITORY | cut -d'/' -f2)
+          echo "✅ Allure report published!"
+          echo "🌐 Online report: https://${{ github.repository_owner }}.github.io/${REPO_NAME}/"
