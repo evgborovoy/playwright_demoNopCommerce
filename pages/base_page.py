@@ -13,10 +13,32 @@ class BasePage:
         self.base_url = Config.BASE_URL.rstrip("/")
         self.test_data = TestData
 
-    @allure.step("Navigate to '{path}'")
-    def navigate(self, path: str = ""):
-        relative = f"/{path.lstrip('/')}" if path else "/"
-        self.page.goto(relative, wait_until="domcontentloaded")
+    def navigate(self, path: str, wait: str = "domcontentloaded"):
+        self.page.goto(path, wait_until=wait)
+        self._wait_cloudflare_gate()
+
+    def _wait_cloudflare_gate(self, timeout_ms: int = 12000):
+        try:
+            title = self.page.title()
+        except Exception:
+            title = ""
+        if "Just a moment" not in title:
+            return
+        self.logger.warning("[CF] Interstitial detected")
+        elapsed = 0
+        step = 500
+        while elapsed < timeout_ms:
+            self.page.wait_for_timeout(step)
+            elapsed += step
+            try:
+                if "Just a moment" not in self.page.title():
+                    self.logger.info("[CF] Interstitial passed")
+                    return
+            except Exception:
+                pass
+        self.logger.warning("[CF] Reloading once…")
+        self.page.reload(wait_until="domcontentloaded")
+        self.page.wait_for_timeout(1500)
 
     @allure.step("Click: {selector}")
     def click(self, selector: str):

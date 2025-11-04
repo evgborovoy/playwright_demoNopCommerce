@@ -16,7 +16,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        browser: [ chromium, firefox, webkit ]
+        include:
+          - browser: chromium
+            browser_channel: chrome
+          - browser: firefox
+            browser_channel: ""
+          - browser: webkit
+            browser_channel: ""
+
 
     permissions:
       contents: write
@@ -42,17 +49,15 @@ jobs:
         run: python -m playwright install --with-deps chromium firefox webkit
 
       - name: Run tests (pytest + xdist) for ${{ matrix.browser }}
+        shell: bash
         run: |
+          set -euo pipefail
           mkdir -p allure-results
-          pytest -n auto --browser ${{ matrix.browser }} --alluredir=allure-results
-
-          - name: Upload allure-results (${{ matrix.browser }})
-            if: always()
-            uses: actions/upload-artifact@v4
-            with:
-              name: allure-results-${{ matrix.browser }}
-              path: allure-results
-              retention-days: 7
+          EXTRA=""
+          if [ -n "${{ matrix.browser_channel }}" ]; then
+            EXTRA="--browser-channel=${{ matrix.browser_channel }}"
+          fi
+          pytest -n auto --browser "${{ matrix.browser }}" $EXTRA --alluredir=allure-results
 
   report:
     name: Allure report
