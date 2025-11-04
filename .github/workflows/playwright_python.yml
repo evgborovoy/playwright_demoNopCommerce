@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
+  tests:
     name: test (${{ matrix.browser }})
     runs-on: ubuntu-latest
     timeout-minutes: 90
@@ -46,7 +46,8 @@ jobs:
           pip install -r requirements.txt
 
       - name: Install Playwright browsers & deps
-        uses: microsoft/playwright-github-action@v1
+        run: |
+          python -m playwright install --with-deps chromium firefox webkit chrome
 
       - name: Run tests (pytest + xdist) for ${{ matrix.browser }}
         continue-on-error: true
