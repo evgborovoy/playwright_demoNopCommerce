@@ -1,143 +1,145 @@
-name: Playwright python tests
+name: Playwright Python CI
 
 on:
   push:
-    branches: [ 'main', 'master', 'dev' ]
+    branches: [ "main", "master", "dev" ]
   pull_request:
-    branches: [ 'main', 'master', 'dev' ]
+    branches: [ "main", "master", "dev" ]
   workflow_dispatch:
 
 jobs:
   tests:
-    name: test (${{ matrix.browser }})
+    name: tests (${{ matrix.browser }}${{ matrix.channel && format(' / {0}', matrix.channel) || '' }})
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 45
 
     strategy:
       fail-fast: false
       matrix:
         include:
           - browser: chromium
-            browser_channel: chrome
+            channel: "chrome"
           - browser: firefox
-            browser_channel: ""
+            channel: ""
           - browser: webkit
-            browser_channel: ""
-
-
-    permissions:
-      contents: write
-      pages: write
-      id-token: write
+            channel: ""
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up python
+      - name: Set up Python 3.13
         uses: actions/setup-python@v5
         with:
-          python-version: 3.13
+          python-version: "3.13"
           cache: pip
+          cache-dependency-path: requirements.txt
 
-      - name: Install dependencies
+      - name: Install Python deps
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Install Playwright browsers & deps
+      - name: Install Playwright browsers and system deps
         run: |
-          python -m playwright install --with-deps chromium firefox webkit chrome
+          python -m playwright install --with-deps chromium firefox webkit
 
-      - name: Run tests (pytest + xdist) for ${{ matrix.browser }}
-        continue-on-error: true
-        shell: bash
+      - name: Run pytest (matrix shard)
+        env:
+          PYTEST_ADDOPTS: "-n auto -q"
         run: |
-          set -euo pipefail
           mkdir -p allure-results
-          EXTRA=""
-          if [ -n "${{ matrix.browser_channel }}" ]; then
-            EXTRA="--browser-channel=${{ matrix.browser_channel }}"
+          EXTRA_CHANNEL_ARG=""
+          if [ -n "${{ matrix.channel }}" ]; then
+            EXTRA_CHANNEL_ARG="--channel=${{ matrix.channel }}"
           fi
-          pytest -n auto --browser "${{ matrix.browser }}" $EXTRA --alluredir=allure-results
+          set -x
+          pytest \
+            --browser ${{ matrix.browser }} ${EXTRA_CHANNEL_ARG} \
+            --alluredir=allure-results || true
+          set +x
 
-      - name: Upload allure-results (${{ matrix.name }})
-        if: ${{ always() }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: allure-results-${{ matrix.name }}
-          path: allure-results
-          retention-days: 7
-
-  report:
-    name: Allure report
-    runs-on: ubuntu-latest
-    needs: [ tests ]
-    if: ${{ always() }}
-
-    permissions:
-      contents: write
-      pages: write
-      id-token: write
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Download allure-results from all matrix jobs
-        uses: actions/download-artifact@v4
-        with:
-          path: ./artifacts
-
-      - name: Install Allure CLI
-        run: |
-          set -euo pipefail
-          curl -sSL -o "$RUNNER_TEMP/allure.zip" \
-            https://github.com/allure-framework/allure2/releases/download/2.25.0/allure-2.25.0.zip
-          unzip -q "$RUNNER_TEMP/allure.zip" -d "$RUNNER_TEMP/allure"
-          echo "$RUNNER_TEMP/allure/allure-2.25.0/bin" >> $GITHUB_PATH
-          allure --version
-
-      - name: Merge and Generate Allure report
-        run: |
-          set -euo pipefail
-          mkdir -p allure-report
-          mapfile -t RESULTS_DIRS < <(find artifacts -type d -name "allure-results" | sort || true)
-          if [ "${#RESULTS_DIRS[@]}" -gt 0 ]; then
-            printf 'Merging results from:\n'; printf ' - %s\n' "${RESULTS_DIRS[@]}"
-            allure generate "${RESULTS_DIRS[@]}" -o allure-report --clean
-          else
-            echo "No allure results found. Creating placeholder report."
-            mkdir -p allure-report
-            printf '%s\n' \
-          '<!doctype html><meta charset="utf-8">' \
-          '<title>Allure report</title>' \
-          '<h2>No test results were produced</h2>' \
-          '<p>Looks like tests did not create any Allure results.</p>' \
-          > allure-report/index.html
-          fi
-
-      - name: Upload Allure results
+      - name: Upload Allure results (per shard)
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: allure-results-${{ matrix.browser }}-${{ matrix.channel || 'stable' }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: allure-results
+          if-no-files-found: warn
           retention-days: 10
+          overwrite: true
 
-      - name: Deploy report to gh-pages
-        if: ${{ always() }}
+  merge-and-publish:
+    name: Merge & Publish Allure
+    runs-on: ubuntu-latest
+    needs: [ tests ]
+    if: always()
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download all shard artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: allure-results-*
+          path: artifacts
+          merge-multiple: false
+
+      - name: Merge Allure results
+        run: |
+          mkdir -p merged-results
+          if compgen -G "artifacts/*" > /dev/null; then
+            find artifacts -type f -maxdepth 2 -print0 | xargs -0 -I {} cp "{}" merged-results/ || true
+          fi
+          echo "Merged results files: $(ls -1 merged-results 2>/dev/null | wc -l)"
+
+      - name: Set up Node (for Allure CLI via npm)
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Allure commandline
+        run: |
+          npm i -g allure-commandline
+          allure --version
+
+      - name: Generate Allure report
+        run: |
+          if [ -d merged-results ] && [ "$(ls -A merged-results)" ]; then
+            allure generate merged-results -o allure-report --clean
+          else
+            echo "No Allure results found. Creating placeholder report."
+            mkdir -p allure-report
+            cat > allure-report/index.html <<'HTML'
+            <!doctype html>
+            <html><head><meta charset="utf-8"><title>No Allure results</title></head>
+            <body style="font-family: sans-serif;">
+              <h1>Allure</h1>
+              <p>No allure results were produced in this run.</p>
+            </body></html>
+            HTML
+          fi
+
+      - name: Upload merged Allure report (artifact)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report-merged-${{ github.run_id }}-${{ github.run_attempt }}
+          path: allure-report
+          retention-days: 10
+          overwrite: true
+
+      - name: Publish to GitHub Pages
+        if: always()
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: ./allure-report
+          publish_dir: allure-report
           force_orphan: true
-          enable_jekyll: false
 
-      - name: Print Allure report link
-        if: ${{ always() }}
+      - name: Print report link
+        if: always()
         run: |
-          REPO_NAME=$(echo $GITHUB_REPOSITORY | cut -d'/' -f2)
-          echo "✅ Allure report published!"
-          echo "🌐 Online report: https://${{ github.repository_owner }}.github.io/${REPO_NAME}/"
+          echo "✅ Allure report published"
+          echo "🌐 https://${{ github.repository_owner }}.github.io/$(echo $GITHUB_REPOSITORY | cut -d'/' -f2)/"
