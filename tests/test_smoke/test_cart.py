@@ -1,5 +1,6 @@
 import allure
 
+
 class TestCartSmoke:
     """
     Smoke tests for cart critical functionality

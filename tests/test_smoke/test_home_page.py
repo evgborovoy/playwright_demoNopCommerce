@@ -1,35 +1,24 @@
 import pytest
+import allure
 
 
+@allure.suite("Smoke")
 @pytest.mark.smoke
 class TestHomePage:
-    """
-    Smoke tests for nopCommerce home page
-    """
-
+    @allure.title("Home opens and title contains brand")
     def test_home_page_loading(self, home_page):
+        """Home opens and title is correct"""
         home_page.navigate_to_home()
+        home_page.assert_title()
 
-        title = home_page.get_page_title()
-        home_page.logger.info(f"Page title: {title}")
-
-        assert "nopCommerce" in title
-        home_page.logger.info("Home page loaded successfully with correct title")
-
+    @allure.title("Login link is visible to a guest")
     def test_login_link_visible(self, home_page):
+        """Login link is visible to a guest"""
         home_page.navigate_to_home()
+        assert home_page.is_login_link_visible()
 
-        is_visible = home_page.is_login_link_visible()
-        home_page.logger.info(f"Login link visible: {is_visible}")
-
-        assert is_visible, "Login link should be visible on home page"
-        home_page.logger.info("Login link is visible as expected")
-
+    @allure.title("Register link is visible to a guest")
     def test_register_link_visible(self, home_page):
+        """Register link is visible to a guest"""
         home_page.navigate_to_home()
-
-        is_visible = home_page.is_register_link_visible()
-        home_page.logger.info(f"Register link visible: {is_visible}")
-
-        assert is_visible, "Register link should be visible on home page"
-        home_page.logger.info("Register link is visible as expected")
+        assert home_page.is_register_link_visible()

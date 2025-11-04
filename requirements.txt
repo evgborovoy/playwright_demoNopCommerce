@@ -1,3 +1,4 @@
+allure-python-commons
 playwright>=1.47
 pytest>=8.2
 pytest-playwright>=0.6

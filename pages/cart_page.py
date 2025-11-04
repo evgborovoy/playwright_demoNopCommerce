@@ -1,106 +1,61 @@
+import allure
 from playwright.sync_api import expect
-
 from .base_page import BasePage
 
 
 class CartPage(BasePage):
     CART_ITEMS = ".cart tbody tr"
-    PRODUCT_NAMES = ".product a"
     QUANTITY_INPUTS = ".qty-input"
-    UNIT_PRICES = ".product-unit-price"
-    SUBTOTALS = ".product-subtotal"
+    UPDATE_BUTTON = "button[name='updatecart']"
     REMOVE_BUTTONS = ".remove-btn"
     EMPTY_CART_MESSAGE = ".order-summary-content"
-    TERMS_CHECKBOX = "#termsofservice"
-    CHECKOUT_BUTTON = "#checkout"
-    CART_TOTAL = ".order-total .product-price"
 
+    @allure.step("Open cart page")
     def navigate_to_cart(self):
-        self.navigate("cart")
-        self.wait_for_cart_loaded()
+        """Open the cart page"""
+        self.navigate("/cart")
 
-    def wait_for_cart_loaded(self):
-        self.logger.info("Waiting for cart to load")
-
-        try:
-            self.page.wait_for_selector(f"{self.CART_ITEMS}, {self.EMPTY_CART_MESSAGE}",
-                                        state="visible", timeout=15000)
-            self.logger.info("Cart loaded")
-        except Exception as e:
-            self.logger.warning(f"Cart loading warning: {e}")
-
-    def get_cart_items_count(self) -> int:
-        try:
-            items = self.page.locator(self.CART_ITEMS).filter(
-                has=self.page.locator(".product-name")
-            )
-            count = items.count()
-            self.logger.info(f"Cart has {count} items")
-            return count
-        except Exception as e:
-            self.logger.warning(f"Error counting cart items: {e}")
-            return 0
-
-    def get_product_quantity(self, item_index: int = 0):
-        qty_inputs = self.page.locator(self.QUANTITY_INPUTS)
-        expect(qty_inputs.nth(item_index)).to_be_visible(timeout=5000)
-        val = qty_inputs.nth(item_index).input_value()
-        try:
-            return int(val)
-        except (ValueError, TypeError):
-            self.logger.warning(f"Cannot parse quantity value '{val}', returning 0")
-            return 0
-
-
-    def is_cart_empty(self) -> bool:
-        if self.get_cart_items_count() == 0:
-            return True
-
-        if self.is_visible(self.EMPTY_CART_MESSAGE):
-            message = self.get_text(self.EMPTY_CART_MESSAGE)
-            return "empty" in message.lower() if message else False
-
-        return False
-
-    def get_product_names(self) -> list:
-        names = []
-        try:
-            for name_element in self.page.locator(self.PRODUCT_NAMES).all():
-                name = name_element.text_content()
-                if name and name.strip():
-                    names.append(name.strip())
-        except Exception as e:
-            self.logger.warning(f"Error getting product names: {e}")
-        return names
-
-    def update_product_quantity(self, product_index: int, new_quantity: int):
-        self.logger.info(f"Updating product {product_index + 1} quantity to {new_quantity}")
-
-        try:
-            quantity_inputs = self.page.locator(self.QUANTITY_INPUTS)
-            if quantity_inputs.count() > product_index:
-                quantity_inputs.nth(product_index).fill(str(new_quantity))
-                self.page.press(self.QUANTITY_INPUTS, "Enter")
-                self.wait_for_cart_loaded()
-                return True
-        except Exception as e:
-            self.logger.error(f"Error updating quantity: {e}")
-        return False
-
-    def remove_product(self, product_index: int = 0):
-        self.logger.info(f"Removing product {product_index + 1} from cart")
-
-        try:
-            remove_buttons = self.page.locator(self.REMOVE_BUTTONS)
-            if remove_buttons.count() > product_index:
-                remove_buttons.nth(product_index).click()
-                self.wait_for_cart_loaded()
-                return True
-        except Exception as e:
-            self.logger.error(f"Error removing product: {e}")
-        return False
-
+    @allure.step("Clear cart")
     def clear_cart(self):
-        self.logger.info("Start clear cart")
-        while not self.is_cart_empty():
-            self.remove_product(0)
+        """Remove all items from the cart"""
+        if self.page.locator(self.CART_ITEMS).count() == 0:
+            return
+        for btn in self.page.locator(self.REMOVE_BUTTONS).all():
+            # Supports both checkbox-like and button-like behavior
+            try:
+                btn.check()
+            except Exception:
+                btn.click()
+        self.click(self.UPDATE_BUTTON)
+        expect(self.page.locator(self.EMPTY_CART_MESSAGE)).to_be_visible()
+
+    @allure.step("Get cart items count")
+    def get_cart_items_count(self) -> int:
+        """Count meaningful rows by presence of product name cell"""
+        return self.page.locator(self.CART_ITEMS).filter(has=self.page.locator(".product-name")).count()
+
+    @allure.step("Read product quantity by index: {item_index}")
+    def get_product_quantity(self, item_index: int = 0) -> int:
+        """Read quantity input value by index"""
+        text = self.page.locator(self.QUANTITY_INPUTS).nth(item_index).input_value()
+        try:
+            return int(text)
+        except Exception:
+            return 0
+
+    @allure.step("Set product quantity at index: {item_index} -> {qty}")
+    def set_product_quantity(self, item_index: int, qty: int):
+        inp = self.page.locator(self.QUANTITY_INPUTS).nth(item_index)
+        expect(inp).to_be_attached(timeout=5000)
+        inp.fill(str(qty))
+        self.page.locator(self.UPDATE_BUTTON).first.click()
+        self.page.wait_for_load_state("networkidle")
+
+    @allure.step("Update product quantity at index {item_index} -> {qty}")
+    def update_product_quantity(self, item_index: int, qty: int) -> bool:
+        """Update quantity and assert UI reflects the change"""
+        locator = self.page.locator(self.QUANTITY_INPUTS).nth(item_index)
+        locator.fill(str(qty))
+        self.page.wait_for_load_state("networkidle")
+        expect(locator).to_have_value(str(qty))
+        return True

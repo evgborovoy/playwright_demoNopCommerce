@@ -1,32 +1,32 @@
+import allure
 from config.test_data import TestData
 
 
+@allure.suite("Auth")
+@allure.title("Register -> Logout -> Login (happy path)")
 def test_complete_auth_flow(home_page, register_page, login_page):
     """
-    Test complete authentication flow using centralized test data
+    Full happy-path:
+    - Register
+    - Logout
+    - Login back
+    - Validate session state via HomePage
     """
-
     user_data = TestData.generate_user_data()
 
-    # Registration
+    # register
     home_page.navigate_to_home()
     home_page.click_register()
     register_page.register(user_data)
     assert register_page.is_registration_successful()
     register_page.click_continue()
-
-    # Verify logged in after registration
     assert home_page.is_user_logged_in()
 
-    # Logout
+    # logout
     home_page.click_logout()
     assert home_page.is_user_logged_out()
 
-    # Login with registered credentials
+    # login
     home_page.click_login()
     login_page.login(user_data["email"], user_data["password"])
-
-    # Verify logged in again
     assert home_page.is_user_logged_in()
-
-    print(f"Complete auth flow successful for: {user_data['email']}")
