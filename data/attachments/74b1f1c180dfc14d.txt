@@ -1,0 +1,4 @@
+2025-11-05 00:22:49,937 - INFO - [FILL] #Email -> invalid@example.com
+2025-11-05 00:22:50,042 - INFO - [FILL] #Password -> wrongpassword123
+2025-11-05 00:22:50,173 - INFO - [CLICK] role=button[name='Log in']
+2025-11-05 00:22:51,647 - INFO - [LOGIN ERROR] Login was unsuccessful. Please correct the errors and try again.No customer account found

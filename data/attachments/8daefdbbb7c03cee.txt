@@ -1,0 +1,14 @@
+INFO     nopcommerce_framework:base_page.py:22 [CLICK] role=link[name='Register']
+INFO     nopcommerce_framework:base_page.py:22 [CLICK] #gender-male
+INFO     nopcommerce_framework:base_page.py:28 [FILL] //input[@id='FirstName'] -> Luke
+INFO     nopcommerce_framework:base_page.py:28 [FILL] //input[@id='LastName'] -> Anderson
+INFO     nopcommerce_framework:base_page.py:28 [FILL] #Email -> rcastro@example.org
+INFO     nopcommerce_framework:base_page.py:28 [FILL] #Password -> Test123!
+INFO     nopcommerce_framework:base_page.py:28 [FILL] #ConfirmPassword -> Test123!
+INFO     nopcommerce_framework:base_page.py:22 [CLICK] #register-button
+INFO     nopcommerce_framework:base_page.py:22 [CLICK] role=link[name='Continue']
+INFO     nopcommerce_framework:base_page.py:22 [CLICK] role=link[name='Log out']
+INFO     nopcommerce_framework:base_page.py:22 [CLICK] role=link[name='Log in']
+INFO     nopcommerce_framework:base_page.py:28 [FILL] #Email -> rcastro@example.org
+INFO     nopcommerce_framework:base_page.py:28 [FILL] #Password -> Test123!
+INFO     nopcommerce_framework:base_page.py:22 [CLICK] role=button[name='Log in']

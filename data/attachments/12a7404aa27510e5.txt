@@ -1,0 +1,1 @@
+INFO     nopcommerce_framework:test_cart.py:14 Cart page loads correctly

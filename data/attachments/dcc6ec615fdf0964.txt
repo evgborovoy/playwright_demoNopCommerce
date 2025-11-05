@@ -1,0 +1,8 @@
+INFO     nopcommerce_framework:base_page.py:22 [CLICK] #gender-female
+INFO     nopcommerce_framework:base_page.py:28 [FILL] //input[@id='FirstName'] -> Kayla
+INFO     nopcommerce_framework:base_page.py:28 [FILL] //input[@id='LastName'] -> Marsh
+INFO     nopcommerce_framework:base_page.py:28 [FILL] #Email -> douglasmoody@example.net
+INFO     nopcommerce_framework:base_page.py:28 [FILL] #Password -> Test123!
+INFO     nopcommerce_framework:base_page.py:28 [FILL] #ConfirmPassword -> Test123!
+INFO     nopcommerce_framework:base_page.py:22 [CLICK] #register-button
+INFO     nopcommerce_framework:base_page.py:22 [CLICK] role=link[name='Continue']

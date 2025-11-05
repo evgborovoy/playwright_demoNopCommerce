@@ -1,0 +1,1 @@
+2025-11-05 00:23:16,559 - INFO - [CLICK] role=link[name='Log in']

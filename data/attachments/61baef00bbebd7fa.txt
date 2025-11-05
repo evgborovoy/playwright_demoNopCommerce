@@ -1,0 +1,14 @@
+2025-11-05 00:22:47,687 - INFO - [CLICK] role=link[name='Register']
+2025-11-05 00:22:51,169 - INFO - [CLICK] #gender-male
+2025-11-05 00:22:51,449 - INFO - [FILL] //input[@id='FirstName'] -> Daniel
+2025-11-05 00:22:51,549 - INFO - [FILL] //input[@id='LastName'] -> Soto
+2025-11-05 00:22:51,657 - INFO - [FILL] #Email -> tamimclaughlin@example.org
+2025-11-05 00:22:51,775 - INFO - [FILL] #Password -> Test123!
+2025-11-05 00:22:51,892 - INFO - [FILL] #ConfirmPassword -> Test123!
+2025-11-05 00:22:51,998 - INFO - [CLICK] #register-button
+2025-11-05 00:22:59,464 - INFO - [CLICK] role=link[name='Continue']
+2025-11-05 00:23:01,045 - INFO - [CLICK] role=link[name='Log out']
+2025-11-05 00:23:03,661 - INFO - [CLICK] role=link[name='Log in']
+2025-11-05 00:23:04,710 - INFO - [FILL] #Email -> tamimclaughlin@example.org
+2025-11-05 00:23:04,810 - INFO - [FILL] #Password -> Test123!
+2025-11-05 00:23:04,918 - INFO - [CLICK] role=button[name='Log in']

@@ -1,0 +1,7 @@
+2025-11-05 00:31:09,833 - INFO - [CLICK] #gender-male
+2025-11-05 00:31:09,966 - INFO - [FILL] //input[@id='FirstName'] -> Jimmy
+2025-11-05 00:31:10,038 - INFO - [FILL] //input[@id='LastName'] -> Burton
+2025-11-05 00:31:10,092 - INFO - [FILL] #Email -> stuartberg@example.com
+2025-11-05 00:31:10,129 - INFO - [FILL] #Password -> Test123!
+2025-11-05 00:31:10,189 - INFO - [FILL] #ConfirmPassword -> Test123!
+2025-11-05 00:31:10,236 - INFO - [CLICK] #register-button

@@ -1,0 +1,8 @@
+2025-11-05 00:23:18,628 - INFO - [CLICK] #gender-female
+2025-11-05 00:23:19,045 - INFO - [FILL] //input[@id='FirstName'] -> Kayla
+2025-11-05 00:23:19,115 - INFO - [FILL] //input[@id='LastName'] -> Gomez
+2025-11-05 00:23:19,206 - INFO - [FILL] #Email -> tdaniel@example.net
+2025-11-05 00:23:19,336 - INFO - [FILL] #Password -> Test123!
+2025-11-05 00:23:19,408 - INFO - [FILL] #ConfirmPassword -> Test123!
+2025-11-05 00:23:19,477 - INFO - [CLICK] #register-button
+2025-11-05 00:23:20,528 - INFO - [CLICK] role=link[name='Continue']
