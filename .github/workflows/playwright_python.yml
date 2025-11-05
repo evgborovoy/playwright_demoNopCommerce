@@ -105,20 +105,19 @@ jobs:
           allure --version
 
       - name: Generate Allure report
+        shell: bash
         run: |
           if [ -d merged-results ] && [ "$(ls -A merged-results)" ]; then
             allure generate merged-results -o allure-report --clean
           else
-            echo "No Allure results found. Creating placeholder report."
             mkdir -p allure-report
-            cat > allure-report/index.html <<'HTML'
-            <!doctype html>
-            <html><head><meta charset="utf-8"><title>No Allure results</title></head>
-            <body style="font-family: sans-serif;">
-              <h1>Allure</h1>
-              <p>No allure results were produced in this run.</p>
-            </body></html>
-            HTML
+            printf '%s\n' \
+              '<!doctype html>' \
+              '<html><head><meta charset="utf-8"><title>No Allure results</title></head>' \
+              '<body style="font-family: sans-serif;">' \
+              '  <h1>Allure</h1>' \
+              '  <p>No allure results were produced in this run.</p>' \
+              '</body></html>' > allure-report/index.html
           fi
 
       - name: Upload merged Allure report (artifact)
