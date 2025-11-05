@@ -42,7 +42,7 @@ jobs:
 
       - name: Install Playwright browsers and system deps
         run: |
-          python -m playwright install --with-deps chromium firefox webkit
+          python -m playwright install --with-deps chromium firefox webkit chrome
 
       - name: Run pytest (matrix shard)
         env:
@@ -50,8 +50,8 @@ jobs:
         run: |
           mkdir -p allure-results
           EXTRA_CHANNEL_ARG=""
-          if [ -n "${{ matrix.channel }}" ]; then
-            EXTRA_CHANNEL_ARG="--channel=${{ matrix.channel }}"
+          if [ "${{ matrix.browser }}" = "chromium" ] && [ -n "chrome" ]; then
+            EXTRA_CHANNEL_ARG="--browser-channel=chrome"
           fi
           set -x
           pytest \
