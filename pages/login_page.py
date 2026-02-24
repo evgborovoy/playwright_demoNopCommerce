@@ -19,8 +19,8 @@ class LoginPage(BasePage):
     @allure.step("Wait for login form")
     def wait_for_login_form(self):
         """Ensure form inputs are visible before interacting"""
-        self.expect_visible(self.EMAIL_INPUT)
-        self.expect_visible(self.PASSWORD_INPUT)
+        self.is_visible(self.EMAIL_INPUT)
+        self.is_visible(self.PASSWORD_INPUT)
 
     @allure.step("Submit login credentials")
     def login(self, email: str, password: str, remember_me: bool = False):

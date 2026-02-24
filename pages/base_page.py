@@ -32,13 +32,8 @@ class BasePage:
         """Return text content or empty string if missing"""
         return self.page.locator(selector).first.text_content() or ""
 
-    def is_visible(self, selector: str) -> bool:
-        """Synchronous visibility check for quick boolean flows"""
-        return self.page.locator(selector).first.is_visible()
-
-    # Web-first assertions (preferred way to reduce flakiness)
     @allure.step("Expect visible: {selector}")
-    def expect_visible(self, selector: str):
+    def is_visible(self, selector: str):
         """Assert that an element becomes visible"""
         expect(self.page.locator(selector).first).to_be_visible()
 

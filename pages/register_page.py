@@ -18,7 +18,7 @@ class RegisterPage(BasePage):
     def navigate_to_register(self):
         """Open /register and wait for the form"""
         self.navigate("/register")
-        self.expect_visible(self.FIRST_NAME_INPUT)
+        self.is_visible(self.FIRST_NAME_INPUT)
 
     @allure.step("Select gender: {gender}")
     def select_gender(self, gender: str = "male"):
