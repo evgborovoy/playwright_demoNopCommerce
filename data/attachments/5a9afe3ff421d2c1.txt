@@ -1,0 +1,7 @@
+INFO     nopcommerce_framework:base_page.py:22 [CLICK] #gender-male
+INFO     nopcommerce_framework:base_page.py:28 [FILL] //input[@id='FirstName'] -> Paul
+INFO     nopcommerce_framework:base_page.py:28 [FILL] //input[@id='LastName'] -> Martinez
+INFO     nopcommerce_framework:base_page.py:28 [FILL] #Email -> timothycampbell@example.net
+INFO     nopcommerce_framework:base_page.py:28 [FILL] #Password -> Test123!
+INFO     nopcommerce_framework:base_page.py:28 [FILL] #ConfirmPassword -> Test123!
+INFO     nopcommerce_framework:base_page.py:22 [CLICK] #register-button

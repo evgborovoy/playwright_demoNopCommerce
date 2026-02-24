@@ -1,0 +1,7 @@
+2026-02-24 16:02:29,928 - INFO - [CLICK] #gender-female
+2026-02-24 16:02:30,266 - INFO - [FILL] //input[@id='FirstName'] -> Shannon
+2026-02-24 16:02:30,329 - INFO - [FILL] //input[@id='LastName'] -> Lloyd
+2026-02-24 16:02:30,480 - INFO - [FILL] #Email -> berrynicholas@example.net
+2026-02-24 16:02:30,583 - INFO - [FILL] #Password -> Test123!
+2026-02-24 16:02:30,668 - INFO - [FILL] #ConfirmPassword -> Test123!
+2026-02-24 16:02:30,718 - INFO - [CLICK] #register-button

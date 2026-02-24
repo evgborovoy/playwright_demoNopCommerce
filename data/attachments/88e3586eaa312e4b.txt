@@ -1,0 +1,3 @@
+INFO     nopcommerce_framework:base_page.py:28 [FILL] #Email -> invalid@example.com
+INFO     nopcommerce_framework:base_page.py:28 [FILL] #Password -> wrongpassword123
+INFO     nopcommerce_framework:base_page.py:22 [CLICK] role=button[name='Log in']

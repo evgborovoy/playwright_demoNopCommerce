@@ -1,0 +1,3 @@
+2026-02-24 16:01:54,424 - INFO - [FILL] #Email -> invalid@example.com
+2026-02-24 16:01:54,498 - INFO - [FILL] #Password -> wrongpassword123
+2026-02-24 16:01:54,631 - INFO - [CLICK] role=button[name='Log in']

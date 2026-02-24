@@ -1,0 +1,8 @@
+2026-02-24 16:01:52,680 - INFO - [CLICK] role=link[name='Register']
+2026-02-24 16:01:54,893 - INFO - [CLICK] #gender-male
+2026-02-24 16:01:55,030 - INFO - [FILL] //input[@id='FirstName'] -> Patrick
+2026-02-24 16:01:55,080 - INFO - [FILL] //input[@id='LastName'] -> Gutierrez
+2026-02-24 16:01:55,147 - INFO - [FILL] #Email -> lperry@example.net
+2026-02-24 16:01:55,204 - INFO - [FILL] #Password -> Test123!
+2026-02-24 16:01:55,312 - INFO - [FILL] #ConfirmPassword -> Test123!
+2026-02-24 16:01:55,404 - INFO - [CLICK] #register-button
